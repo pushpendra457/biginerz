@@ -25,13 +25,23 @@ class Grower(Base):
     # ── Demographics ──────────────────────────────────────────────────────────
     language = Column(String(50), nullable=True)
     device_type = Column(
-        SQLEnum(DeviceType, name="devicetype", create_type=False),
+        SQLEnum(
+            DeviceType, 
+            name="devicetype", 
+            create_type=False, 
+            values_callable=lambda obj: [e.value for e in obj]
+        ),
         nullable=False,
         default=DeviceType.UNKNOWN,
     )
     grower_age = Column(Integer, nullable=True)
     gender = Column(
-        SQLEnum(Gender, name="gender", create_type=False),
+        SQLEnum(
+            Gender, 
+            name="gender", 
+            create_type=False, 
+            values_callable=lambda obj: [e.value for e in obj]
+        ),
         nullable=True,
     )
     grower_farm_size = Column(Float, nullable=True)  # acres

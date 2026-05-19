@@ -134,32 +134,32 @@ def _safe_int(val, default: int | None = None) -> int | None:
 
 
 def _coerce_visit_type(raw: str) -> str:
-    """Map CSV visit_type strings to VisitType enum values."""
+    """Map CSV visit_type strings directly to Postgres ENUM values."""
     mapping = {
-        "retailer meeting": VisitType.RETAILER_MEETING.value,
-        "grower meeting": VisitType.GROWER_MEETING.value,
-        "campaign_conducted": VisitType.CAMPAIGN_CONDUCTED.value,
-        "campaign conducted": VisitType.CAMPAIGN_CONDUCTED.value,
+        "retailer meeting": "retailer meeting",
+        "grower meeting": "grower meeting",
+        "campaign_conducted": "campaign_conducted",
+        "campaign conducted": "campaign_conducted",
     }
-    return mapping.get(str(raw).strip().lower(), VisitType.RETAILER_MEETING.value)
+    return mapping.get(str(raw).strip().lower(), "retailer meeting")
 
 
 def _coerce_device(raw: str) -> str:
+    """Map CSV device strings directly to Postgres lowercase ENUM values."""
     mapping = {
-        "smartphone": DeviceType.SMARTPHONE.value,
-        "keypad": DeviceType.KEYPAD.value,
+        "smartphone": "smartphone",
+        "keypad": "keypad",
     }
-    return mapping.get(str(raw).strip().lower(), DeviceType.UNKNOWN.value)
+    return mapping.get(str(raw).strip().lower(), "unknown")
 
 
 def _coerce_gender(raw) -> str | None:
+    """Map CSV gender strings directly to Postgres lowercase ENUM values."""
     if pd.isna(raw):
         return None
     g = str(raw).strip().lower()
-    if g == "male":
-        return Gender.MALE.value
-    if g == "female":
-        return Gender.FEMALE.value
+    if g in ["male", "female"]:
+        return g
     return None
 
 
@@ -601,7 +601,7 @@ def main():
     df_inventory = load("retailer_inventory_weekly.csv")
     df_pos = load("retailer_pos.csv")
     df_funnel = load("digital_funnel_weekly.csv")
-    df_whatsapp = load("whatsapp_message_log.csv")
+    df_whatsapp = load("whatsapp_campaign.csv")
 
     # ── Seed ──────────────────────────────────────────────────────────────────
     print("\nSeeding …")

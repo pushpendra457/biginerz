@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # ── PostgreSQL ───────────────────────────────────────
     # Replaced MONGO_URI and MONGO_DB_NAME with standard, validated relational connection parameters
     DATABASE_URL: str = Field(
-        default="postgresql+psycopg://postgres:password@localhost:5432/antifarm",
+        default="postgresql+psycopg://postgres:1234@localhost:5432/new_db_biginerz",
         description="Async PostgreSQL connection string using the psycopg driver schema"
     )
 

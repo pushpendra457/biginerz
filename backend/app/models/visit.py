@@ -47,11 +47,21 @@ class Visit(Base):
     visit_date = Column(Date, default=date.today, nullable=False)
     visit_tehsil = Column(String(100), nullable=False)
     visit_type = Column(
-        SQLEnum(VisitType, name="visittype", create_type=False),
+        SQLEnum(
+            VisitType, 
+            name="visittype", 
+            create_type=False, 
+            values_callable=lambda obj: [e.value for e in obj]
+        ),
         nullable=False,
     )
     outcome = Column(
-        SQLEnum(VisitOutcome, name="visitoutcome", create_type=False),
+        SQLEnum(
+            VisitOutcome, 
+            name="visitoutcome", 
+            create_type=False, 
+            values_callable=lambda obj: [e.value for e in obj]
+        ),
         default=VisitOutcome.NOT_RECORDED,
         nullable=False,
     )
