@@ -3,6 +3,7 @@ import { useAuthStore } from '../stores/auth';
 
 import LoginView from '../views/LoginView.vue';
 import RepHomeView from '../views/RepHomeView.vue';
+import RetailerDetailView from '../views/RetailerDetailView.vue';
 import RetailerHomeView from '../views/RetailerHomeView.vue';
 
 const routes = [
@@ -11,6 +12,12 @@ const routes = [
   { 
     path: '/rep', 
     component: RepHomeView,
+    meta: { requiresAuth: true, role: 'rep' }
+  },
+  { 
+    // New Route for the Detail View
+    path: '/rep/retailer/:id', 
+    component: RetailerDetailView,
     meta: { requiresAuth: true, role: 'rep' }
   },
   { 

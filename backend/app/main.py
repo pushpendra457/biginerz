@@ -5,10 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import time
 import logging
+from ml_models import model_registry
 
 from app.config import get_settings
 from app.database import connect_db, disconnect_db
-from app.resources import auth_resources # Import your new resources router
+from app.resources import auth_resources, rep_resources # Import your new resources router
 
 # Set up logging configuration
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Starting up: Initializing database connection pool...")
     await connect_db()
+    model_registry.preload_all()
     
     yield  # Application is running and serving requests
     
@@ -73,7 +75,7 @@ async def add_process_time_header(request: Request, call_next):
 # Mount the API resources (endpoints)
 
 app.include_router(auth_resources.router, prefix="/api/v1")
-
+app.include_router(rep_resources.router, prefix="/api/v1")
 
 # ── Health Check ─────────────────────────────────────────────
 @app.get("/health", tags=["System"])
@@ -82,6 +84,7 @@ async def health_check():
     return {
         "status": "online",
         "app_name": settings.APP_NAME,
-        "version": settings.APP_VERSION
+        "version": settings.APP_VERSION,
+        "models": model_registry.health()
     }
 
