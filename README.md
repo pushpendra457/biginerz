@@ -1,6 +1,6 @@
-# AntiFarm - Field Force Intelligence
+# Biginerz Farm - Field Force Intelligence
 
-AntiFarm is a modern, offline-first Field Force Intelligence platform. It empowers sales representatives with AI-driven insights to prioritize retailer visits, optimize territories, and maximize ROI even in areas with poor or intermittent network connectivity.
+Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It empowers sales representatives with AI-driven insights to prioritize retailer visits, optimize territories, and maximize ROI even in areas with poor or intermittent network connectivity.
 
 ## Technology Stack
 - **Backend:** FastAPI, Python, PostgreSQL (SQLAlchemy + async psycopg)
