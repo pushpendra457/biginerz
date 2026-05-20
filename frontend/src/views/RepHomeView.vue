@@ -1,45 +1,63 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { useAuthStore } from '../stores/auth';
+import axios from 'axios'; 
 
 const router = useRouter();
+const authStore = useAuthStore(); // 👈 Must be at the top level!
 
+// State variables
 const searchQuery = ref('');
 const sortBy = ref('score_desc');
 const loading = ref(false);
-
 const retailers = ref([]);
 
+// Fetch the real list from FastAPI
 const fetchRetailerList = async () => {
   loading.value = true;
   try {
-    // Calling our brand new batch API!
-    const response = await axios.get('http://127.0.0.1:8000/api/v1/rep-tools/my-retailers');
-    retailers.value = response.data.data; 
+    // Using backticks to dynamically inject the logged-in user's ID
+    const url = `http://127.0.0.1:8000/api/v1/rep-tools/my-retailers?rep_id=${authStore.userId}`;
+    const response = await axios.get(url);
     
-    loading.value = false;
+    // Safety check: ensure data exists before assignment
+    if (response.data && response.data.data) {
+      retailers.value = response.data.data;
+    } else {
+      retailers.value = [];
+    }
   } catch (err) {
     console.error("Failed to load list", err);
+  } finally {
+    // This MUST run to clear the loading screen
     loading.value = false;
   }
 };
 
 onMounted(() => fetchRetailerList());
 
-// Computed property to handle searching and sorting instantly on the frontend
+// Computed property to handle searching and sorting instantly
 const processedRetailers = computed(() => {
-  // 1. Filter by search
-  let result = retailers.value.filter(r => 
-    r.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
-    r.id.toString() === searchQuery.value
-  );
+  if (!retailers.value) return [];
 
-  // 2. Sort
+  let result = retailers.value.filter(r => {
+    // Safety check in case the database returned a null name
+    const nameStr = r.name ? r.name.toLowerCase() : '';
+    const idStr = r.id ? r.id.toString() : '';
+    const searchStr = searchQuery.value.toLowerCase();
+    
+    return nameStr.includes(searchStr) || idStr === searchStr;
+  });
+
   result.sort((a, b) => {
     if (sortBy.value === 'score_desc') return b.score - a.score;
     if (sortBy.value === 'score_asc') return a.score - b.score;
-    if (sortBy.value === 'name_asc') return a.name.localeCompare(b.name);
+    if (sortBy.value === 'name_asc') {
+       const nameA = a.name || '';
+       const nameB = b.name || '';
+       return nameA.localeCompare(nameB);
+    }
     return 0;
   });
 

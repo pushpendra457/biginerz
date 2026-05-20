@@ -11,32 +11,19 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/rep-tools", tags=["Sales Rep Operations"])
 
 @router.get("/priority/{retailer_id}")
-async def get_retailer_priority_dashboard(retailer_id: int, db: AsyncSession = Depends(get_db)):
-    live_temp = 36.5
-    live_humidity = 82.0    
-    live_rain = 5.0
-    live_ndvi = 0.34        
-    live_pest = "medium"    
+async def get_retailer_priority_dashboard(retailer_id: int, db: AsyncSession = Depends(get_db)):   
 
     try:
-        # ADDED 'await' HERE to process the async database lookup securely
-        prediction_result = await RetailerPriorityService.get_live_priority_score(
-            db=db,
-            retailer_id=retailer_id,
-            live_temp=live_temp,
-            live_humidity=live_humidity,
-            live_rain=live_rain,
-            live_ndvi=live_ndvi,
-            live_pest=live_pest
+       
+        result = await RetailerPriorityService.get_live_priority_score(
+            db=db, 
+            retailer_id=retailer_id
         )
         
-        if not prediction_result:
-            raise HTTPException(status_code=503, detail="ML pipeline unavailable.")
+        if not result:
+            raise HTTPException(status_code=503, detail="ML Pipeline unavailable")
             
-        return {
-            "status": "success",
-            "data": prediction_result
-        }
+        return {"status": "success", "data": result.__dict__}
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
