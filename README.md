@@ -68,7 +68,7 @@ Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It e
 
 ## 2. Machine Learning Pipeline: How It Predicts
 
-AntiFarm utilizes an advanced Machine Learning pipeline to calculate a **Retailer Priority Score**. The model predicts the expected weekly revenue for each retailer and translates that into an actionable priority tier to guide the field force.
+BiginerzFarm utilizes an advanced Machine Learning pipeline to calculate a **Retailer Priority Score**. The model predicts the expected weekly revenue for each retailer and translates that into an actionable priority tier to guide the field force.
 
 ### A. Data Sources
 The model aggregates data from multiple operational dimensions (usually stored in the `data/` folder):
