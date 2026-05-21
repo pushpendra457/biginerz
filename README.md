@@ -43,7 +43,19 @@ Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It e
    ```
    *(Note: Ensure `sqlalchemy`, `psycopg`, `pandas`, `scikit-learn`, and `joblib` are installed in your environment for the DB and ML features to function).*
 
-4. Start the FastAPI server:
+4. Seed the database with initial data:
+   ```bash
+   # Ensure you are in the backend directory
+   python seed.py --data-dir ../data
+   ```
+
+5. Generate and hash passwords for the seeded Reps and Retailers:
+   ```bash
+   python generate_passwords.py
+   ```
+   *(Note: By default, the seed script sets empty passwords. This script generates secure hashed passwords like `Syngenta@REP_001` or `Syngenta@RTL_001` based on the ID).*
+
+6. Start the FastAPI server:
    ```bash
    uvicorn app.main:app --reload
    ```
