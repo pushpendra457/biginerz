@@ -76,14 +76,7 @@ Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It e
    ```
    The frontend will run on `http://localhost:5173`.
 
-### credentials 
-usre_id - REP_0001
-password - Syngenta@{user_id}
 
-example :
-
-user_id - REP_0001
-password-Syngenta@REP_0001
 
 ---
 
