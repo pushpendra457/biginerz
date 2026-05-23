@@ -1,3 +1,11 @@
 {
-  "postman.settings.dotenv-detection-notification-visibility": false
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "github.completions.enabled": true,
+  "github.copilot.advanced": {
+    "debug.overrideCurlDebugging": false
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false
+  }
 }

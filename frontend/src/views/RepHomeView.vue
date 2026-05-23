@@ -5,7 +5,7 @@ import { useAuthStore } from '../stores/auth';
 import axios from 'axios'; 
 
 const router = useRouter();
-const authStore = useAuthStore(); // 👈 Must be at the top level!
+const authStore = useAuthStore(); 
 
 // State variables
 const searchQuery = ref('');

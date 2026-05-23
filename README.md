@@ -53,7 +53,7 @@ Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It e
    ```bash
    python generate_passwords.py
    ```
-   *(Note: By default, the seed script sets empty passwords. This script generates secure hashed passwords like `Syngenta@REP_001` or `Syngenta@RTL_001` based on the ID).*
+   *(Note: By default, the seed script sets empty passwords. This script generates secure hashed passwords like `Syngenta@REP_0001` or `Syngenta@RTL_001` based on the ID).*
 
 6. Start the FastAPI server:
    ```bash
