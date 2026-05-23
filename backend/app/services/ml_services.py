@@ -1,14 +1,14 @@
 # app/services/ml_services.py
 
-import logging
-import httpx
-from typing import Optional
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy import func, case
+import logging                                        # used for printing logs/messages proffesional (kind of like a backened print() system but proffesional)
+import httpx                                          # used to make api calls  eg:(response = await httpx.get("https://api.weather.com"))
+from typing import Optional                           # used for typing hints.  eg:(name: Optional[str] -------> expects string or none but even if it is integer no runtime crash .....tool and editor may warn  but no strictness ) 
+from sqlalchemy.ext.asyncio import AsyncSession        #A database connection that works asynchronously
+from sqlalchemy.future import select                   # to prepare a query object (read data from database)
+from sqlalchemy import func, case                      # func: database funcitons like average , max ,min......... case: for if else statement 
 from datetime import date
 
-
+# different different tables(classes)
 from app.models.rep import Rep
 from app.models.retailer import Retailer
 from app.models.retailer_pos import RetailerPOS
@@ -17,11 +17,12 @@ from app.models.visit import Visit
 from ml_models import model_registry
 from ml_models.retailer_priority.predictor import RetailerFeatures, PriorityResult
 
-logger = logging.getLogger("services.ml_services")
+logger = logging.getLogger("services.ml_services")          # basically creating a notebook for different part of application so you can refer to it here "services.ml_services" is the name and logging.getLogger is a way to create notebook, id does not always create a new one if the one with same name exists it writes to it 
 log = logger
 
 # ── NEW: LIVE ENVIRONMENT API FETCHER ──────────────────────────────────────────
-class LiveEnvironmentService:
+
+class LiveEnvironmentService:                                                    #  a class component that  is reponsible for fetching real/live data  i.e.used for production, processing it , returning usable info                                 
     @staticmethod
     async def get_live_weather(district_name: str) -> dict:
         """
@@ -37,13 +38,13 @@ class LiveEnvironmentService:
             "live_pest": "medium" # Usually calculated internally based on temp/humidity
         }
 
-        # Simple coordinate mapping for demo purposes (Expand this in your DB)
+        # Simple coordinate mapping for demo purposes ( may  Expand this in  DB)
         coords = {"latitude": 26.9124, "longitude": 75.7873} # Jaipur Default
         if "patna" in district_name.lower():
             coords = {"latitude": 25.5941, "longitude": 85.1376}
 
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient() as client:                             #so basically this client is same as the client of client server but the only difference is it is an asynchronous client 
                 url = f"https://api.open-meteo.com/v1/forecast?latitude={coords['latitude']}&longitude={coords['longitude']}&current=temperature_2m,relative_humidity_2m,precipitation&timezone=Asia%2FKolkata"
                 response = await client.get(url, timeout=3.0)
                 

@@ -76,6 +76,8 @@ Biginerz Farm is a modern, offline-first Field Force Intelligence platform. It e
    ```
    The frontend will run on `http://localhost:5173`.
 
+
+
 ---
 
 ## 2. Machine Learning Pipeline: How It Predicts
